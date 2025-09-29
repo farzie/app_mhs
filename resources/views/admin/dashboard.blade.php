@@ -103,7 +103,7 @@
             </h3>
 
             <div class="mb-4">
-                <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Cari berdasarkan Nama, NIM, atau Prodi..." class="w-full md:w-1/3 border border-gray-300 p-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Cari berdasarkan kata kunci (Nama, NIM, atau Prodi)..." class="w-full md:w-1/3 border border-gray-300 p-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             
             <div class="overflow-x-auto">
@@ -136,7 +136,7 @@
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                         {{ $mhs->status_saat_ini == 'Aktif' ? 'bg-green-100 text-green-800' : 
                                         ($mhs->status_saat_ini == 'Lulus' ? 'bg-indigo-100 text-indigo-800' : 'bg-red-100 text-red-800') }}">
-                                        {{ $mhs->status_saat_ini }}
+                                            {{ $mhs->status_saat_ini }}
                                     </span>
                                 </td>
                                 <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
@@ -378,22 +378,43 @@
             renderTable();
         }
 
-        // --- FUNGSI SEARCHING ---
+        // --- FUNGSI SEARCHING (PERBAIKAN) ---
         
         function filterTable() {
             const input = document.getElementById('search-input');
-            const filter = input.value.toUpperCase();
-            
-            filteredRows = allRows.filter(row => {
-                // Kolom yang dicari: NIM (0), Nama (1), Prodi (3)
-                const nimText = getCellValue(row, 0).toUpperCase();
-                const namaText = getCellValue(row, 1).toUpperCase();
-                const prodiText = getCellValue(row, 3).toUpperCase();
+            const searchString = input.value.toUpperCase().trim();
 
-                return (nimText.includes(filter) || 
-                        namaText.includes(filter) || 
-                        prodiText.includes(filter));
-            });
+            if (searchString === "") {
+                filteredRows = [...allRows];
+            } else {
+                // Pisahkan string pencarian menjadi kata kunci individual
+                // Regex: memisahkan berdasarkan spasi, menghilangkan string kosong
+                const keywords = searchString.split(/\s+/).filter(k => k.length > 0); 
+                
+                filteredRows = allRows.filter(row => {
+                    const nimText = getCellValue(row, 0).toUpperCase();
+                    const namaText = getCellValue(row, 1).toUpperCase();
+                    const prodiText = getCellValue(row, 3).toUpperCase();
+                    
+                    // Gabungkan teks dari kolom yang dicari menjadi satu string besar
+                    const rowText = `${nimText} ${namaText} ${prodiText}`;
+
+                    // Cek apakah SEMUA kata kunci ditemukan dalam teks baris
+                    return keywords.every(keyword => rowText.includes(keyword));
+                    
+                    /*
+                    // JIKA INGIN MENGGUNAKAN LOGIKA "OR" (HANYA SALAH SATU KEYWORD DITEMUKAN)
+                    // return keywords.some(keyword => rowText.includes(keyword)); 
+                    */
+                    
+                    /*
+                    // LOGIKA ASLI (HANYA SATU KALIMAT PENUH)
+                    // return (nimText.includes(searchString) || 
+                    //         namaText.includes(searchString) || 
+                    //         prodiText.includes(searchString));
+                    */
+                });
+            }
 
             currentPage = 1;
             renderTable();
