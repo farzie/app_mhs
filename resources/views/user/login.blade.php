@@ -11,7 +11,7 @@
     <div class="w-full max-w-md">
         <div class="bg-white shadow-xl rounded-lg px-8 pt-6 pb-8 mb-4">
             <h2 class="text-3xl font-bold text-center text-indigo-600 mb-6">
-                SIMUNS Login
+                Login SSO
             </h2>
             <form action="{{ route('login') }}" method="POST"> 
                 @csrf 
@@ -27,7 +27,7 @@
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                        Password (Masukkan NIM Anda)
+                        NIM Anda
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500 @error('password') border-red-500 @enderror" 
                         id="password" name="password" type="password" placeholder="K35XXXXX">

@@ -2,24 +2,59 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-// Menggunakan nama Controller Anda
-use App\Http\Controllers\AuthController; 
-use App\Http\Controllers\ProfileController; 
+use App\Http\Controllers\UserController; 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MahasiswaCrudController;
 
-// --- ROUTE HOME ---
+// --- ROUTE UTAMA ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// --- ROUTE AUTENTIKASI (Dilindungi middleware 'guest' kecuali logout) ---
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); 
-    Route::post('/login', [AuthController::class, 'login']); 
+// --- ROUTE USER (AUTENTIKASI & PROFIL) ---
+Route::controller(UserController::class)->group(function () {
+    
+    // RUTE UNTUK PENGGUNA YANG BELUM LOGIN (GUEST)
+    Route::middleware('guest')->group(function () {
+        // Form Login
+        Route::get('/login', 'showLoginForm')->name('login'); 
+        // Proses Login
+        Route::post('/login', 'login')->name('login.attempt'); 
+    });
+
+    // RUTE UNTUK PENGGUNA YANG SUDAH LOGIN (AUTH)
+    Route::middleware('auth')->group(function () {
+        // Profil
+        Route::get('/profile', 'profile')->name('profile'); 
+        
+        // Logout
+        Route::post('/logout', 'logout')->name('logout');
+    });
 });
 
-// --- ROUTE PROTECTED (Hanya untuk pengguna yang sudah login) ---
-Route::middleware('auth')->group(function () {
-    // Profil (menggunakan method show() dari ProfileController)
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+// --- ROUTE ADMIN ---
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // root/admin
+    Route::redirect('/', '/admin/login');
+
+    // 1. Halaman Login Admin
+    Route::get('login', [AdminController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AdminController::class, 'login'])->name('login.attempt');
+
+    // 2. Rute yang dilindungi (root/admin/dashboard)
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::post('logout', [AdminController::class, 'logout'])->name('logout');
+    });
+
+        // --- ROUTE CRUD MAHASISWA ---
+    Route::middleware('auth:admin')->controller(MahasiswaCrudController::class)->group(function () {
+        // STORE (CREATE)
+        Route::post('mahasiswa', 'store')->name('mahasiswa.store');
+        
+        // UPDATE
+        Route::put('mahasiswa/{mahasiswa}', 'update')->name('mahasiswa.update'); 
+        
+        // DELETE
+        Route::delete('mahasiswa/{mahasiswa}', 'destroy')->name('mahasiswa.destroy');
+    });
 });

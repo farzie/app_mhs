@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class AkunMahasiswa extends Authenticatable
+class Admin extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'login_akun_mhs';
-
+    protected $table = 'login_admin'; 
+    
     protected $fillable = [
-        'nim', 'nama', 'akun',
+        'username',
+        'password',
     ];
 
     protected $hidden = [
-        'nim',
+        'password',
     ];
 }
