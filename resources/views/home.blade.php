@@ -61,12 +61,11 @@
 
     <main class="w-full bg-gray-50 relative z-10 mx-auto pt-8 pb-12 lg:pt-12 lg:pb-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <section class="mb-12 bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-8 border-indigo-700">
+        <section class="mb-12 bg-white rounded-xl shadow-2xl p-6 md:p-10 border-t-8 border-indigo-700">
             <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
                     Pencarian Data Mahasiswa
                 </h3>
-                <form class="relative" action="#" method="GET"> 
+                <form class="relative" id="searchForm" action="#" method="GET" onsubmit="return handleSearchSubmit(event)"> 
                     <input 
                         type="search" 
                         placeholder="Kata kunci: [Nama] [NIM] [Prodi]" 
@@ -92,17 +91,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-600">
                         <p class="text-sm text-gray-500 font-semibold uppercase">Total Mahasiswa Terdaftar</p>
-                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ $total_mahasiswa ?? '5' }}</p>
+                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ number_format($total_mahasiswa) }}</p>
                         <p class="text-sm text-indigo-500 mt-2">Data kumulatif seluruh angkatan.</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-600">
                         <p class="text-sm text-gray-500 font-semibold uppercase">Mahasiswa Aktif Saat Ini</p>
-                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ $mahasiswa_aktif ?? '2' }}</p>
+                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ number_format($mahasiswa_aktif) }}</p>
                         <p class="text-sm text-green-500 mt-2">Status: Aktif.</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-orange-600">
                         <p class="text-sm text-gray-500 font-semibold uppercase">Lulusan / Alumni</p>
-                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ $mahasiswa_lulus ?? '1' }}</p>
+                        <p class="text-5xl font-bold text-gray-900 mt-2">{{ number_format($mahasiswa_lulus) }}</p>
                         <p class="text-sm text-orange-500 mt-2">Status: Lulus.</p>
                     </div>
                 </div>
@@ -110,26 +109,40 @@
                 <h2 class="text-2xl font-bold text-gray-900 mb-4 pt-4 border-t border-gray-200">
                     Distribusi Status Mahasiswa
                 </h2>
+                
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    
                     <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
-                        <p class="text-4xl font-extrabold text-blue-600">{{ $mahasiswa_aktif ?? '2' }}</p>
+                        <p class="text-4xl font-extrabold text-blue-600">{{ number_format($status_distribusi['Aktif'] ?? 0) }}</p>
                         <p class="text-sm text-gray-600 mt-1">Aktif</p>
                     </div>
+                    
                     <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
-                        <p class="text-4xl font-extrabold text-yellow-600">{{ $mahasiswa_cuti ?? '1' }}</p>
+                        <p class="text-4xl font-extrabold text-yellow-600">{{ number_format($status_distribusi['Cuti'] ?? 0) }}</p>
                         <p class="text-sm text-gray-600 mt-1">Cuti</p>
                     </div>
+                    
                     <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
-                        <p class="text-4xl font-extrabold text-red-600">{{ $mahasiswa_mengundurkan_diri ?? '1' }}</p>
+                        <p class="text-4xl font-extrabold text-red-600">{{ number_format($status_distribusi['Mengundurkan Diri'] ?? 0) }}</p>
                         <p class="text-sm text-gray-600 mt-1">Mengundurkan Diri</p>
                     </div>
+                    
                     <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
-                        <p class="text-4xl font-extrabold text-indigo-600">{{ $mahasiswa_lulus ?? '1' }}</p>
+                        <p class="text-4xl font-extrabold text-indigo-600">{{ number_format($status_distribusi['Lulus'] ?? 0) }}</p>
                         <p class="text-sm text-gray-600 mt-1">Lulus</p>
                     </div>
+                    
+                    @foreach ($status_distribusi as $status => $count)
+                        @if (!in_array($status, ['Aktif', 'Cuti', 'Mengundurkan Diri', 'Lulus']))
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
+                                <p class="text-4xl font-extrabold text-gray-500">{{ number_format($count) }}</p>
+                                <p class="text-sm text-gray-600 mt-1">{{ $status }}</p>
+                            </div>
+                        @endif
+                    @endforeach
+
                 </div>
             </section>
-
         </div>
     </main>
 
@@ -147,6 +160,20 @@
             let opacity = Math.min(scrollPos / maxScroll, 1);
             header.style.backgroundColor = `rgba(49, 46, 129, ${opacity})`; 
         });
+
+        function handleSearchSubmit(event) {
+            event.preventDefault();
+            
+            const inputElement = document.querySelector('input[name="search_query"]');
+            let searchQuery = inputElement.value.trim();
+
+            if (searchQuery) {
+                const encodedQuery = encodeURIComponent(searchQuery);
+
+                window.location.href = `/search/${encodedQuery}`;
+            }
+            return false;
+        }
     </script>
 
 </body>

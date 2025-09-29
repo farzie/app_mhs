@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MahasiswaCrudController;
+use App\Http\Controllers\SearchController;
 
 // --- ROUTE UTAMA ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -58,3 +59,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::delete('mahasiswa/{mahasiswa}', 'destroy')->name('mahasiswa.destroy');
     });
 });
+
+// Route untuk halaman pencarian
+Route::get('/search/{query}', [SearchController::class, 'index'])->name('search');
