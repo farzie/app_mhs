@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Search;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DataMahasiswa;
+use Illuminate\Support\Facades\Crypt;
 
 class SearchController extends Controller
 {
     public function index(string $query, Request $request)
     {
+
         $searchQuery = urldecode($query);
         $keywords = array_filter(explode(' ', $searchQuery));
 
@@ -26,7 +29,12 @@ class SearchController extends Controller
 
         $results = $results->paginate(6)->withQueryString();
 
-        return view('search', [
+        $results->through(function ($item) {
+            $item->hash_id = Crypt::encryptString($item->id); 
+            return $item;
+        });
+
+        return view('search.search', [
             'searchQuery' => $searchQuery,
             'keywords' => $keywords,
             'results' => $results,

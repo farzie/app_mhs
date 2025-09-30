@@ -5,7 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MahasiswaCrudController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Search\SearchController;
+use App\Http\Controllers\Search\InfoMahasiswaController;
 
 // --- ROUTE UTAMA ---
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -60,5 +61,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     });
 });
 
-// Route untuk halaman pencarian
-Route::get('/search/{query}', [SearchController::class, 'index'])->name('search');
+// --- ROUTE PENCARIAN DATA MAHASISWA ---
+Route::prefix('search')->group(function () {
+    // 1. Rute Penanganan Pencarian Kosong (URL: /search)
+    Route::get('/', function () {
+        return redirect()->route('home');
+    })->name('search.empty'); 
+
+    // 2. Rute Penanganan Hasil Pencarian
+    Route::get('/{query}', [SearchController::class, 'index'])->name('search.results'); 
+});
+
+// --- ROUTE DETAIL DATA MAHASISWA -
+Route::get('/data-mahasiswa/{hash_id}', [InfoMahasiswaController::class, 'show'])
+    ->name('mahasiswa.info');

@@ -74,7 +74,7 @@
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Jenjang - Prodi</label>
-                    <input type="text" name="jenjang_prodi" value="{{ old('jenjang_prodi') }}" placeholder="Cth: Sarjana - Informatika" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" name="jenjang_prodi" value="{{ old('jenjang_prodi') }}" placeholder="Cth: S1 - Informatika" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Tanggal Masuk</label>
@@ -82,7 +82,14 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Status Saat Ini</label>
-                    <input type="text" name="status_saat_ini" value="{{ old('status_saat_ini') }}" placeholder="Cth: Aktif, Lulus, Cuti" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="status_saat_ini" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Pilih</option>
+                        <option value="Aktif" {{ old('status_saat_ini') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Lulus" {{ old('status_saat_ini') == 'Lulus' ? 'selected' : '' }}>Lulus</option>
+                        <option value="Cuti" {{ old('status_saat_ini') == 'Cuti' ? 'selected' : '' }}>Cuti</option>
+                        <option value="Mengundurkan Diri" {{ old('status_saat_ini') == 'Mengundurkan-Diri' ? 'selected' : '' }}>Mengundurkan Diri</option>
+                        <option value="Hilang" {{ old('status_saat_ini') == 'Hilang' ? 'selected' : '' }}>Hilang</option>
+                    </select>
                 </div>
                 
                 <div>
@@ -91,7 +98,11 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Status Awal Mahasiswa</label>
-                    <input type="text" name="status_awal_mhs" value="{{ old('status_awal_mhs') }}" placeholder="Cth: Peserta Didik Baru" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="status_awal_mhs" required class="w-full border border-gray-300 p-2 mt-1 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Pilih</option>
+                        <option value="Peserta Didik Baru" {{ old('status_awal_mhs') == 'Peserta-Didik-Baru' ? 'selected' : '' }}>Peserta Didik Baru</option>
+                        <option value="Pindahan" {{ old('status_awal_mhs') == 'Pindahan' ? 'selected' : '' }}>Pindahan</option>
+                        </select>
                 </div>
                 
                 <div class="md:col-span-4 flex justify-end">
@@ -190,7 +201,7 @@
     </main>
     
     <div id="edit-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl">
+        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-3xl">
             <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">
                 Edit Data Mahasiswa
             </h3>

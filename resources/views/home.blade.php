@@ -133,9 +133,14 @@
                         <p class="text-4xl font-extrabold text-indigo-600">{{ number_format($status_distribusi['Lulus'] ?? 0) }}</p>
                         <p class="text-sm text-gray-600 mt-1">Lulus</p>
                     </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
+                        <p class="text-4xl font-extrabold text-gray-600">{{ number_format($status_distribusi['Hilang'] ?? 0) }}</p>
+                        <p class="text-sm text-gray-600 mt-1">Hilang</p>
+                    </div>
                     
                     @foreach ($status_distribusi as $status => $count)
-                        @if (!in_array($status, ['Aktif', 'Cuti', 'Mengundurkan Diri', 'Lulus']))
+                        @if (!in_array($status, ['Aktif', 'Cuti', 'Mengundurkan Diri', 'Lulus', 'Hilang']))
                             <div class="p-4 bg-gray-50 rounded-lg shadow-inner">
                                 <p class="text-4xl font-extrabold text-gray-500">{{ number_format($count) }}</p>
                                 <p class="text-sm text-gray-600 mt-1">{{ $status }}</p>
