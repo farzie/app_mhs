@@ -84,11 +84,11 @@
                                 
                                 @if ($results->onFirstPage())
                                     <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-white border border-gray-300 cursor-default rounded-md">
-                                        &lt; Sebelumnya
+                                        &lt; Previous
                                     </span>
                                 @else
                                     <a href="{{ $results->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:text-indigo-600">
-                                        &lt; Sebelumnya
+                                        &lt; Previous
                                     </a>
                                 @endif
                             </div>
@@ -102,11 +102,11 @@
                             <div class="flex space-x-2">
                                 @if ($results->hasMorePages())
                                     <a href="{{ $results->nextPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:text-indigo-600">
-                                        Selanjutnya &gt;
+                                        Next &gt;
                                     </a>
                                 @else
                                     <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-white border border-gray-300 cursor-default rounded-md">
-                                        Selanjutnya &gt;
+                                        Next &gt;
                                     </span>
                                 @endif
                                 
