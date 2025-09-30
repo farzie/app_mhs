@@ -9,8 +9,12 @@
 <body class="bg-gray-50 min-h-screen">
 
     <header class="bg-indigo-700 text-white p-4 shadow-lg border-b border-gray-200">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-extrabold tracking-tight">Profil SIMUNS</h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <a href="{{ route('home') }}" class="text-white hover:text-indigo-100 transition duration-300 ease-in-out">
+                <h1 class="text-5xl font-extrabold">
+                    SIMUNS
+                </h1>
+            </a>
             
             <a href="{{ route('home') }}" class="bg-white hover:bg-indigo-100 text-indigo-700 font-bold py-2 px-4 rounded-full shadow-md transition duration-200 flex items-center text-base">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -27,7 +31,7 @@
     <main class="max-w-4xl mx-auto mt-12">
         <div class="bg-white shadow-2xl rounded-xl p-8 md:p-12 border-t-4 border-indigo-600">
             <h2 class="text-3xl font-extrabold text-gray-800 mb-8 border-b-2 pb-3">
-                Akun Mahasiswa
+                Profil Akun Mahasiswa
             </h2>
             
             <div class="space-y-6">

@@ -12,8 +12,12 @@
 <body class="bg-gray-100 min-h-screen">
 
     <header class="bg-indigo-700 text-white p-4 shadow-lg sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-extrabold tracking-tight">Dashboard SIMUNS</h1>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <a href="{{ route('home') }}" class="text-white hover:text-indigo-100 transition duration-300 ease-in-out">
+                <h1 class="text-5xl font-extrabold">
+                    SIMUNS
+                </h1>
+            </a>
             
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
@@ -43,6 +47,7 @@
         @endif
 
         <div id="create-section" class="bg-white shadow-xl rounded-lg p-6 mb-8 border-t-4 border-indigo-600">
+            <h1 class="text-3xl font-extrabold tracking-tight pb-10">Dashboard SIMUNS</h1>
             <h3 class="text-2xl font-bold text-gray-800 mb-4">
                 Tambah Data Mahasiswa Baru
             </h3>

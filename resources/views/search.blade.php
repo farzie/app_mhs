@@ -10,9 +10,11 @@
     
     <header id="mainHeader" class="fixed top-0 left-0 w-full z-50 py-4 bg-indigo-700 shadow-xl"> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white" id="headerTitle">
-                SIMUNS
-            </h1>
+            <a href="{{ route('home') }}" class="text-white hover:text-indigo-100 transition duration-300 ease-in-out">
+                <h1 class="text-5xl font-extrabold">
+                    SIMUNS
+                </h1>
+            </a>
             
             <div class="flex items-center space-x-2">
                 @auth 
