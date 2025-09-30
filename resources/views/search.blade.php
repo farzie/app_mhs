@@ -95,7 +95,7 @@
 
                             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
                                 <p class="text-sm text-gray-700">
-                                    Halaman **{{ $results->currentPage() }}** dari **{{ $results->lastPage() }}**
+                                    Halaman {{ $results->currentPage() }} dari {{ $results->lastPage() }}
                                 </p>
                             </div>
 
