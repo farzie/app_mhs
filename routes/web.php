@@ -20,8 +20,15 @@ Route::controller(UserController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('login'); 
         // Proses Login
         Route::post('/login', 'login')->name('login.attempt'); 
+        
+        // --- BARU DITAMBAHKAN UNTUK REGISTRASI ---
+        // Form Pendaftaran
+        Route::get('/register', 'showRegistrationForm')->name('register');
+        // Proses Pendaftaran
+        Route::post('/register', 'register')->name('register.submit');
+        // ------------------------------------------
     });
-
+    
     // RUTE UNTUK PENGGUNA YANG SUDAH LOGIN (AUTH)
     Route::middleware('auth')->group(function () {
         // Profil
