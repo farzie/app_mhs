@@ -16,18 +16,18 @@ class UserController extends Controller
         if (Auth::check()) {
             return redirect()->route('home');
         }
-        return view('user.login'); 
+        return view('user.login');
     }
 
     public function login(Request $request)
     {
         $request->validate([
             'email' => ['required', 'string'],
-            'password' => ['required', 'string'], 
+            'password' => ['required', 'string'],
         ]);
 
         $inputEmail = $request->input('email');
-        $inputNim = $request->input('password'); 
+        $inputNim = $request->input('password');
 
         $user = AkunMahasiswa::where('akun', $inputEmail)->first();
 
@@ -43,7 +43,7 @@ class UserController extends Controller
             'email' => 'Email atau NIM yang dimasukkan tidak valid.',
         ])->onlyInput('email');
     }
-    
+
     // LOGIKA LOGOUT
     public function logout(Request $request)
     {
@@ -51,17 +51,17 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home'); 
+        return redirect()->route('home');
     }
 
     // LOGIKA PROFIL
     public function profile()
     {
         // Mendapatkan data user yang sedang login
-        $user = Auth::user(); 
+        $user = Auth::user();
 
         // Menggunakan nama view 'profile.index'
-        return view('user.profile', compact('user')); 
+        return view('user.profile', compact('user'));
     }
 
     // ==========================================================
@@ -78,22 +78,30 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+        // TEMP DEBUG: log CSRF / session info to help diagnose 419 errors
+        try {
+            \Log::info('CSRF debug - request _token', ['_token' => $request->input('_token'), 'header_x_csrf' => $request->header('X-CSRF-TOKEN')]);
+            \Log::info('CSRF debug - server tokens', ['csrf_token()' => csrf_token(), 'session_id' => session()->getId()]);
+        } catch (\Throwable $e) {
+            // swallow logging errors
+        }
+
         // 1. Validasi Data Input
         $validated = $request->validate([
             // Nama Akun (Username): Hanya huruf kecil dan angka, harus unik di tabel 'login_akun_mhs'
             'username' => [
-                'required', 
-                'string', 
-                'min:4', 
+                'required',
+                'string',
+                'min:4',
                 'max:255',
-                'regex:/^[a-z0-9]+$/', 
+                'regex:/^[a-z0-9]+$/',
                 Rule::unique('login_akun_mhs', 'akun'), // Cek unik pada kolom 'akun' (email lengkap)
             ],
             // NIM: Harus diisi
             'nim' => [
-                'required', 
-                'string', 
-                'min:6', 
+                'required',
+                'string',
+                'min:6',
                 'max:15',
             ],
         ]);
@@ -116,7 +124,7 @@ class UserController extends Controller
         // 3. CEK APAKAH AKUN SUDAH PERNAH DIBUAT (berdasarkan NIM)
         // Walaupun kita sudah cek unique pada username, kita cek lagi untuk memastikan NIM ini belum punya akun
         $akunTersedia = AkunMahasiswa::where('nim', $inputNim)->first();
-        
+
         if ($akunTersedia) {
             return back()->withErrors([
                 'nim' => 'NIM ini sudah memiliki akun. Silakan login atau hubungi administrator.',
@@ -126,7 +134,7 @@ class UserController extends Controller
 
         // 4. Buat Akun Baru di Tabel 'login_akun_mhs'
         $user = AkunMahasiswa::create([
-            'akun' => $fullEmail, 
+            'akun' => $fullEmail,
             'nim' => $inputNim, // Gunakan NIM sebagai password
             'nama' => $dataMahasiswa->nama, // Mengambil Nama dari tabel data_mhs
         ]);
